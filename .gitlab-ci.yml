@@ -1,0 +1,30 @@
+stages:
+  - build
+  - test
+
+build_websites:
+  image: node:alpine
+  stage: build
+  script:
+    - node --version
+    - npm --version
+    - ls -la
+    - npm ci
+    - npm run build
+    - ls -la
+  artifacts:
+    paths:
+      - build/
+
+test_artifact:
+  image: alpine
+  stage: tets
+  script:
+    - test -f build/index.html
+
+unit_tests:
+  image: node:alpine
+  stage: test
+  script:
+    - npm ci # needs vitest dependency
+    - npm test
